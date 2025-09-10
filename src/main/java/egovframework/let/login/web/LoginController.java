@@ -57,6 +57,12 @@ public class LoginController {
 	@RequestMapping(value = "/login/actionLogin.do")
 	public String actionLogin(@ModelAttribute("loginVO") LoginVO loginVO, HttpServletRequest request, 
 			ModelMap model) throws Exception {
+		//SNS로그인
+		if(!EgovStringUtil.isEmpty(loginVO.getLoginType())) {
+			loginVO.setId(loginVO.getLoginType() + "-" + loginVO.getId());
+			loginVO.setPassword("");
+		}
+		
 		LoginVO resultVO = loginService.actionLogin(loginVO);
 		if(resultVO != null && resultVO.getId() != null && !resultVO.getId().equals("")) {
 			request.getSession().setAttribute("LoginVO", resultVO);
